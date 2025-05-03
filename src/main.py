@@ -21,6 +21,8 @@ def main(cfg: DictConfig) -> None:
     world_size = torch.cuda.device_count()
     root_dir = Path(hydra.utils.get_original_cwd())
     if world_size < 2:
+        # print(cfg)
+        # print("Config: ", OmegaConf.to_yaml(cfg))
         run(cfg, root_dir)
     else:
         mp.spawn(main_ddp, args=(world_size, cfg, root_dir), nprocs=world_size)

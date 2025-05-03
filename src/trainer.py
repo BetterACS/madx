@@ -45,7 +45,7 @@ class Trainer(StateDictMixin):
         self._world_size = dist.get_world_size() if dist.is_initialized() else 1
 
         # Pick a random seed
-        set_seed(torch.seed() % 10 ** 9)
+        set_seed(torch.seed() % 10**9)
 
         # Device
         self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu", self._rank)
@@ -73,9 +73,7 @@ class Trainer(StateDictMixin):
             path_ckpt_dir=self._path_ckpt_dir,
             num_to_keep=cfg.checkpointing.num_to_keep,
         )
-        self._save_info_for_import_script = partial(
-            save_info_for_import_script, run_name=cfg.wandb.name, path_ckpt_dir=self._path_ckpt_dir
-        )
+        self._save_info_for_import_script = partial(save_info_for_import_script, run_name=cfg.wandb.name, path_ckpt_dir=self._path_ckpt_dir)
 
         # First time, init files hierarchy
         if not cfg.common.resume and self._rank == 0:
@@ -103,7 +101,7 @@ class Trainer(StateDictMixin):
             num_actions = int(test_env.num_actions)
         else:
             num_actions = None
-        num_actions, = broadcast_if_needed(num_actions)
+        (num_actions,) = broadcast_if_needed(num_actions)
 
         # Create models
         self.agent = Agent(instantiate(cfg.agent, num_actions=num_actions)).to(self._device)
@@ -114,12 +112,12 @@ class Trainer(StateDictMixin):
 
         # Collectors
         if not self._is_static_dataset and self._rank == 0:
-            self._train_collector = make_collector(
-                train_env, self.agent.actor_critic, self.train_dataset, cfg.collection.train.epsilon
-            )
+            self._train_collector = make_collector(train_env, self.agent.actor_critic, self.train_dataset, cfg.collection.train.epsilon)
             self._test_collector = make_collector(
                 test_env, self.agent.actor_critic, self.test_dataset, cfg.collection.test.epsilon, reset_every_collect=True
             )
+
+        print(self._train_collector)
 
         ######################################################
 
@@ -229,14 +227,16 @@ class Trainer(StateDictMixin):
                 print(f"\nEpoch {self.epoch} / {num_epochs}\n")
 
             # Training
-            should_collect_train = (self._rank == 0 and not self._is_model_free and not self._is_static_dataset and self.epoch <= self.num_epochs_collect)
+            should_collect_train = (
+                self._rank == 0 and not self._is_model_free and not self._is_static_dataset and self.epoch <= self.num_epochs_collect
+            )
 
             if should_collect_train:
                 c = self._cfg.collection.train
                 to_log += self._train_collector.send(NumToCollect(steps=c.steps_per_epoch))
-            sd_train_dataset, = broadcast_if_needed(self.train_dataset.state_dict())  # update dataset for ranks > 0
-            self.train_dataset.load_state_dict(sd_train_dataset)
-            
+            (sd_train_dataset,) = broadcast_if_needed(self.train_dataset.state_dict())  # update dataset for ranks > 0
+            self.train_dataset.load_state_dict(sd_train_dataset)  # Load dataset from episodes and steps
+
             if self._cfg.training.should:
                 to_log += self.train_agent()
 
@@ -258,7 +258,7 @@ class Trainer(StateDictMixin):
 
             # Checkpointing
             self.save_checkpoint()
-            
+
             if dist.is_initialized():
                 dist.barrier()
 
@@ -362,6 +362,7 @@ class Trainer(StateDictMixin):
 
         for i in trange(num_steps, desc=f"Training {name}", disable=self._rank > 0):
             batch = next(data_iterator).to(self._device) if data_iterator is not None else None
+            print(batch)
             loss, metrics = model(batch) if batch is not None else model()
             loss.backward()
 

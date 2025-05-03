@@ -102,7 +102,6 @@ class Denoiser(nn.Module):
             next_obs = all_obs[:, n + i]
             act = batch.act[:, i : n + i]
             mask = batch.mask_padding[:, n + i]
-            print(mask)
 
             b, t, c, h, w = obs.shape
             obs = obs.reshape(b, t * c, h, w)
