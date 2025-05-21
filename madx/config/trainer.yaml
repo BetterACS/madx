@@ -18,12 +18,12 @@ training:
 checkpointing:
   save_agent_every: 5
   num_to_keep: 11
-  
+
 optimizer:
     lr: 0.0001
     weight_decay: 0.01
     eps: 0.00000001
-  
+
 # sigma_distribution: # log normal distribution for sigma during training
 #     _target_: models.diffusion.SigmaDistributionConfig
 #     loc: -0.4
@@ -51,7 +51,7 @@ agent:
             channels: [64,64,64,64]
             attn_depths: [0,0,0,0]
 
-        
+
         sigma_distribution: # log normal distribution for sigma during training
             _target_: models.diffusion.SigmaDistributionConfig
             loc: -0.4
@@ -120,7 +120,7 @@ collection:
       min: 5000
       max: 10000
       threshold_rew: 10
-    steps_per_epoch: 100
+    steps_per_epoch: 10000
   test:
     num_envs: 1
     num_episodes: 4
