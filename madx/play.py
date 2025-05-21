@@ -151,10 +151,10 @@ if __name__ == "__main__":
 
     # model_weight_path = "/home/monsh/works/image/madx/madx/Boxing.pt"
     # model_weight_path = "/home/monsh/works/image/madx/madx/weights/n-agent-boxing-0100-second.pt"
+    model_weight_path = "/home/monsh/works/image/madx/madx/weights/naive-065000.pt"
     model_weight_path = "/home/monsh/works/image/madx/madx/weights/single-agent-boxing-0050.pt"
-    model_weight_path = "/home/monsh/works/image/madx/madx/weights/naive-035000.pt"
 
-    single_agent = False
+    single_agent = True
     use_vae = True
 
     if use_vae:
@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
         device = "cuda:0"
         vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse").to(device)
-        vae.load_state_dict(torch.load("/home/monsh/works/image/madx/madx/vae_finetuned_boxing_best.pt"))
+        vae.load_state_dict(torch.load("/home/monsh/works/image/madx/madx/weights/vae_finetuned_boxing_best.pt"))
         vae = vae.to(device)
         vae.eval()
 
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     denoiser.load_state_dict(denoiser_state_dict)
     denoiser.eval()
 
-    sampler = DiffusionSampler(denoiser=denoiser, cfg=DiffusionSamplerConfig(num_steps_denoising=1))
+    sampler = DiffusionSampler(denoiser=denoiser, cfg=DiffusionSamplerConfig(num_steps_denoising=5))
     env = env_fn(env_func=get_env_from_id("boxing"))
     observations, infos = env.reset()
 
