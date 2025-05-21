@@ -1,3 +1,8 @@
+*.pt
+*.egg-info
+*.egg
+*.whl
+
 # Custom
 wandb
 .vscode
