@@ -1,0 +1,49 @@
+training:
+    num_autoregressive_steps: 1
+    start_after_epochs: 0
+    steps_first_epoch: 10000
+    steps_per_epoch: 400
+    sample_weights: [0.1, 0.1, 0.1, 0.7]
+    batch_size: 32
+    grad_acc_steps: 1
+    lr_warmup_steps: 100
+    max_grad_norm: 1.0
+    should: True
+    num_final_epochs: 50
+    cache_in_ram: True
+    num_workers_data_loaders: 0
+    model_free: True # if True, turn off world_model training and RL in imagination
+    compile_wm: True
+
+optimizer:
+    lr: 0.0001
+    weight_decay: 0.01
+    eps: 0.00000001
+
+static_dataset:
+    path: null
+    ignore_sample_weights: true
+
+agent:
+    _target_: agent.AgentConfig
+
+    denoiser:
+        _target_: models.diffusion.DenoiserConfig
+        sigma_data: 0.5
+        sigma_offset_noise: 0.3
+        inner_model:
+            _target_: models.diffusion.InnerModelConfig
+            img_channels: 3
+            num_steps_conditioning: 4
+            cond_channels: 256
+            depths: [2,2,2,2]
+            channels: [64,64,64,64]
+            attn_depths: [0,0,0,0]
+
+
+        sigma_distribution: # log normal distribution for sigma during training
+            _target_: models.diffusion.SigmaDistributionConfig
+            loc: -0.4
+            scale: 1.2
+            sigma_min: 0.002
+            sigma_max: 20
