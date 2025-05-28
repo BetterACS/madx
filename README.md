@@ -40,4 +40,27 @@ if there is a problem with pytorch, try installing it manually from [here](https
 | Concat | Human Play (17k) | 28.0194 | 0.0187 | [drive](https://drive.google.com/file/d/1zaeAqz3hRL7Cl0dWT8JSEo5A5aHZxEgz/view?usp=drive_link) |
 | Attention | Human Play (17k) | 28.8662 | 0.0158 | [drive](https://drive.google.com/file/d/1DIel1G043TJUk4QxofhRoZ-eQea5yV8a/view?usp=drive_link) |
 
+
 ## 5-Frame Evaluation
+
+### Random Action Dataset
+| Model | Dataset | PSNR | LPIPS | Weights |
+|-------|---------|------|-------|---------|
+| Naive | Random action space | 20.8487	| 0.1660 | [drive](https://drive.google.com/file/d/1xB9N3vSRu8LWIn4G-gC41z61FNQN3Qrp/view?usp=drive_link) |
+| Concat | Random action space | 21.6272 | 0.2066 | [drive](https://drive.google.com/file/d/1zaeAqz3hRL7Cl0dWT8JSEo5A5aHZxEgz/view?usp=drive_link) |
+| Attention | Random action space | 20.8735	| 0.1995 | [drive](https://drive.google.com/file/d/1DIel1G043TJUk4QxofhRoZ-eQea5yV8a/view?usp=drive_link) |
+
+### Multi-RL Agent Dataset
+
+| Model | Dataset | PSNR | LPIPS | Weights |
+|-------|---------|------|-------|---------|
+| Naive | Multi-RL agent (17k) | 20.4548 | 0.1824 | [drive](https://drive.google.com/file/d/1xB9N3vSRu8LWIn4G-gC41z61FNQN3Qrp/view?usp=drive_link) |
+| Concat | Multi-RL agent (17k) |21.3154 | 0.1837| [drive](https://drive.google.com/file/d/1zaeAqz3hRL7Cl0dWT8JSEo5A5aHZxEgz/view?usp=drive_link) |
+| Attention | Multi-RL agent (17k) | 21.0007 | 0.1904 | [drive](https://drive.google.com/file/d/1DIel1G043TJUk4QxofhRoZ-eQea5yV8a/view?usp=drive_link) |
+
+### Human Play Dataset
+| Model | Dataset | PSNR | LPIPS | Weights |
+|-------|---------|------|-------|---------|
+| Naive | Human Play (17k) |20.7632	| 0.1861 | [drive](https://drive.google.com/file/d/1xB9N3vSRu8LWIn4G-gC41z61FNQN3Qrp/view?usp=drive_link) |
+| Concat | Human Play (17k) | 21.4784 | 0.2008 | [drive](https://drive.google.com/file/d/1zaeAqz3hRL7Cl0dWT8JSEo5A5aHZxEgz/view?usp=drive_link) |
+| Attention | Human Play (17k) | 20.9068 | 0.1946 | [drive](https://drive.google.com/file/d/1DIel1G043TJUk4QxofhRoZ-eQea5yV8a/view?usp=drive_link) |
